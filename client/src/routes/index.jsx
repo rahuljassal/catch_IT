@@ -3,6 +3,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { ProtectedLayout } from "@/components/ProtectedLayout";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
+import { useUser } from "@/hooks/useUser";
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children, isSignedIn, isLoading }) => {
@@ -57,6 +58,7 @@ const PublicDashboard = () => (
 
 export function AppRoutes() {
   const { isSignedIn, isLoading } = useAuth();
+  const { userType } = useUser();
 
   return (
     <Routes>
@@ -95,15 +97,32 @@ export function AppRoutes() {
       />
 
       {/* Public Route */}
-      <Route path="/public" element={<PublicDashboard />} />
+      <Route
+        path="/public"
+        element={
+          userType === "guest" ? (
+            <PublicDashboard />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
 
       {/* Default redirect */}
       <Route
         path="/"
         element={
-          <Navigate to={isSignedIn ? "/dashboard" : "/public"} replace />
+          isSignedIn ? (
+            <Navigate to="/dashboard" replace />
+          ) : userType === "guest" ? (
+            <Navigate to="/public" replace />
+          ) : (
+            <Navigate to="/" replace />
+          )
         }
       />
     </Routes>
   );
 }
+
+export { PublicDashboard };
