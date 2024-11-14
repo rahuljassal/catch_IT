@@ -5,10 +5,10 @@ import {
   SignInButton,
   UserButton,
 } from "@clerk/clerk-react";
-
 export default function App({ children }) {
   return (
-    <header>
+    <header className="flex justify-between items-center p-4">
+      <p>Catch IT !</p>
       <SignedOut>
         <SignIn routing="hash" />
       </SignedOut>
