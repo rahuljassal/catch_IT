@@ -1,9 +1,11 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 import { ProtectedLayout } from "@/components/ProtectedLayout";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/useUser";
+import { useDispatch } from "react-redux";
+import { setUserType } from "../store/userSlice";
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children, isSignedIn, isLoading }) => {
@@ -35,19 +37,29 @@ const Services = () => <div>Services Page</div>;
 const Incidents = () => <div>Incidents Page</div>;
 
 // Public layout component
-const PublicLayout = ({ children }) => (
-  <div className="min-h-screen p-6">
-    <header className="mb-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Catch IT Public Dashboard</h1>
-        <Button variant="outline" asChild>
-          <Link to="/">Sign In</Link>
-        </Button>
-      </div>
-    </header>
-    {children}
-  </div>
-);
+const PublicLayout = ({ children }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSignIn = () => {
+    dispatch(setUserType(""));
+    navigate("/");
+  };
+
+  return (
+    <div className="min-h-screen p-6">
+      <header className="mb-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Catch IT Public Dashboard</h1>
+          <Button variant="outline" onClick={handleSignIn}>
+            Sign In
+          </Button>
+        </div>
+      </header>
+      {children}
+    </div>
+  );
+};
 
 // Public Dashboard with layout
 const PublicDashboard = () => (
