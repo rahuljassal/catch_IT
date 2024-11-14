@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 import { ProtectedLayout } from "@/components/ProtectedLayout";
 import { Button } from "../components/ui/button";
+import { Link } from "react-router-dom";
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children, isSignedIn, isLoading }) => {
@@ -31,10 +32,32 @@ const Dashboard = () => {
 const Organisation = () => <div>Organisation Page</div>;
 const Services = () => <div>Services Page</div>;
 const Incidents = () => <div>Incidents Page</div>;
-const PublicDashboard = () => <div>Public Dashboard</div>;
+
+// Public layout component
+const PublicLayout = ({ children }) => (
+  <div className="min-h-screen p-6">
+    <header className="mb-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Catch IT Public Dashboard</h1>
+        <Button variant="outline" asChild>
+          <Link to="/">Sign In</Link>
+        </Button>
+      </div>
+    </header>
+    {children}
+  </div>
+);
+
+// Public Dashboard with layout
+const PublicDashboard = () => (
+  <PublicLayout>
+    <div>Public Dashboard Content</div>
+  </PublicLayout>
+);
 
 export function AppRoutes() {
   const { isSignedIn, isLoading } = useAuth();
+
   return (
     <Routes>
       {/* Protected Routes */}
@@ -71,7 +94,7 @@ export function AppRoutes() {
         }
       />
 
-      {/* Public Routes */}
+      {/* Public Route */}
       <Route path="/public" element={<PublicDashboard />} />
 
       {/* Default redirect */}
@@ -81,7 +104,6 @@ export function AppRoutes() {
           <Navigate to={isSignedIn ? "/dashboard" : "/public"} replace />
         }
       />
-      {/* <Route path="*" element={<Navigate to="/public" replace />} /> */}
     </Routes>
   );
 }
