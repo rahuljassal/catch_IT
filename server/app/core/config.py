@@ -15,7 +15,8 @@ class Settings(BaseSettings):
 
     CLERK_SECRET_KEY: str
     CLERK_PEM_PUBLIC_KEY: str
-
+    CLERK_JWT_AUDIENCE: str 
+    CLERK_ISSUER: str 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
         return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
