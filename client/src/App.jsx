@@ -1,48 +1,27 @@
-import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/clerk-react";
-import { AppRoutes, PublicDashboard } from "./routes";
-import { Button } from "./components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUserType } from "./store/userSlice";
-import { useUser } from "./hooks/useUser";
-export default function App() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { userType } = useUser();
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { useUser } from "@/hooks/useUser";
+import PublicDashboard from "@/features/dashboard/components/PublicDashboard";
+import { SignInForm } from "@/features/auth/components/SignInForm";
+import { USER_TYPES } from "@/utils/constants";
+import { Header } from "./features/auth/components/layout/Header";
+import { AppRoutes } from "./routes";
 
-  const handleGuestAccess = () => {
-    dispatch(setUserType("guest"));
-    navigate("/public");
-    return null;
-  };
+/**
+ * Root application component
+ * @component
+ */
+export default function App() {
+  const { userType } = useUser();
 
   return (
     <div>
       <SignedIn>
-        <header className="h-16 flex justify-between items-center px-6 border-b">
-          <p className="font-semibold text-lg">Catch IT !</p>
-          <UserButton
-            showName
-            afterSignOut={() => {
-              dispatch(setUserType("guest"));
-              navigate("/public");
-            }}
-          />
-        </header>
+        <Header />
         <AppRoutes />
       </SignedIn>
 
       <SignedOut>
-        {userType === "guest" ? (
-          <PublicDashboard />
-        ) : (
-          <div className="flex flex-col justify-center items-center min-h-screen gap-4">
-            <Button variant="outline" onClick={handleGuestAccess}>
-              Continue as Guest
-            </Button>
-            <SignIn routing="hash" />
-          </div>
-        )}
+        {userType === USER_TYPES.GUEST ? <PublicDashboard /> : <SignInForm />}
       </SignedOut>
     </div>
   );

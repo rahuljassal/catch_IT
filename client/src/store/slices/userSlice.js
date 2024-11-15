@@ -1,7 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { USER_TYPES } from "@/utils/constants";
 
+/**
+ * Initial state for user slice
+ * @typedef {Object} UserState
+ * @property {string} userType - Type of user (guest/authenticated)
+ * @property {Object|null} userInfo - User information
+ * @property {boolean} isLoading - Loading state
+ * @property {string|null} error - Error message
+ */
 const initialState = {
-  userType: "", // "guest" | "authenticated"
+  userType: USER_TYPES.NONE,
   userInfo: null,
   isLoading: false,
   error: null,
@@ -18,12 +27,11 @@ const userSlice = createSlice({
       state.userInfo = action.payload;
     },
     clearUserData: (state) => {
-      state.userType = "guest";
+      state.userType = USER_TYPES.GUEST;
       state.userInfo = null;
     },
   },
 });
-
 export const { setUserType, setUserInfo, clearUserData } = userSlice.actions;
 
 // Selectors
