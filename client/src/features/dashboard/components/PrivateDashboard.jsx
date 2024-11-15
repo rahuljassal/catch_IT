@@ -5,13 +5,25 @@ import { Button } from "@/components/ui/button";
  * @component
  */
 import { useAuth } from "@clerk/clerk-react";
-
+export const baseURL = import.meta.env.VITE_REACT_APP_BACKEND;
 function TestComponent() {
   const { getToken } = useAuth();
 
   const logToken = async () => {
-    const token = await getToken();
-    console.log("JWT Token:", token);
+    try {
+      const token = await getToken({
+        template: "long-lasting",
+        audience: "http://localhost:8000",
+      });
+      console.log("JWT Token:", token);
+
+      // Debug: Decode token to check audience
+      const decoded = JSON.parse(atob(token.split(".")[1]));
+      console.log("Decoded token:", decoded);
+      console.log("Audience:", decoded.aud);
+    } catch (error) {
+      console.error("Error getting token:", error);
+    }
   };
 
   return (
