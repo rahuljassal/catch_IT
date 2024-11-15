@@ -12,6 +12,9 @@ const Services = lazy(() => import("@/features/services/components/Services"));
 const Incidents = lazy(() =>
   import("@/features/incidents/components/Incidents")
 );
+const OrganizationDashboard = lazy(() =>
+  import("@/features/organization/components/OrganizationDashboard")
+);
 
 /**
  * Protected route configuration
@@ -32,6 +35,10 @@ export const protectedRoutes = [
   {
     path: ROUTES.INCIDENTS,
     component: Incidents,
+  },
+  {
+    path: ROUTES.ORGANISATION_DASHBOARD,
+    component: OrganizationDashboard,
   },
 ];
 

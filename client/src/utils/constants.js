@@ -11,6 +11,7 @@ export const ROUTES = {
   DASHBOARD: "/dashboard",
   PUBLIC: "/public",
   ORGANISATION: "/organisation",
+  ORGANISATION_DASHBOARD: "/organisation/dashboard",
   SERVICES: "/services",
   INCIDENTS: "/incidents",
 };
