@@ -1,3 +1,4 @@
+from typing import Optional
 from app.schemas.base import BaseSchema
 
 
@@ -12,3 +13,8 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
+    organization: Optional[str] = None
+    profile_image_url: Optional[str] = None
